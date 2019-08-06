@@ -17,12 +17,14 @@ public class BombController : MonoBehaviour
 
     void Update()
     {
+        CharacterController CC = GameObject.Find("Character").GetComponent<CharacterController>();
         Vector2 p1 = this.bombPrefab.transform.position;
         this.delta += Time.deltaTime;
         if (this.delta > this.span)
         {
             Destroy(bombPrefab);
-            for (int i = 1; i <= 2; i++)
+            CC.count--;
+            for (int i = 1; i <= CC.act2; i++)
             {
                 GameObject LineUp = Instantiate(linePrefab) as GameObject;
                 LineUp.transform.position = new Vector3(p1.x, p1.y + i, 0);
@@ -39,9 +41,11 @@ public class BombController : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D linePrefab)//특정 못하나????
+    void OnTriggerEnter2D(Collider2D other)
     {
-        delta = 2.5f;
+        if(other.gameObject.tag == "Line")
+        {
+            delta = 2.5f;
+        }
     }
-    //만약에 특정되면, 같은자리에 물폭탄 여러개 못놓는기능을 이거로 구현하면 될듯
 }
